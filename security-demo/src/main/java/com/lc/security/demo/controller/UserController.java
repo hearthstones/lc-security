@@ -26,7 +26,7 @@ public class UserController {
 
     @PostMapping("/register")
     @ApiModelProperty("注册")
-    public void register(UserDTO dto) {
+    public void register(@RequestBody UserDTO dto) {
         userService.add(dto);
     }
 

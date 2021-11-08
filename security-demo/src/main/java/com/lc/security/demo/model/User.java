@@ -1,6 +1,7 @@
 package com.lc.security.demo.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 用户类
@@ -9,6 +10,7 @@ import lombok.Data;
  * @date 2021/11/8
  */
 @Data
+@Accessors(chain = true)
 public class User {
     private Integer id;
 
