@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         BeanUtils.copyProperties(dto, user);
         user.setPassword(passwordEncoder.encode(dto.getPassword()))
+                .setClearText(dto.getPassword())
                 .setEnabled(true)
                 .setAccountNonLocked(true)
                 .setAccountNonExpired(true)
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Integer id) {
-
+        userMapper.deleteByPrimaryKey(id);
     }
 
     @Override

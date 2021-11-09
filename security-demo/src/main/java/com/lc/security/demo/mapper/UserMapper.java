@@ -11,11 +11,19 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer id);
+    /**
+     * 根据主键ID删除
+     *
+     * @param id 主键ID
+     */
+    void deleteByPrimaryKey(Integer id);
 
-    int insert(User record);
-
-    int insertSelective(User record);
+    /**
+     * 插入
+     *
+     * @param record user
+     */
+    void insert(User record);
 
     /**
      * 根据主键查询
@@ -33,7 +41,11 @@ public interface UserMapper {
      */
     User selectByUsername(String username);
 
+    /**
+     * 更新
+     *
+     * @param record user
+     * @return int
+     */
     int updateByPrimaryKeySelective(User record);
-
-    int updateByPrimaryKey(User record);
 }

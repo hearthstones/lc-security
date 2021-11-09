@@ -20,6 +20,8 @@ public class User {
 
     private String password;
 
+    private String clearText;
+
     private String mobile;
 
     private Boolean enabled;
