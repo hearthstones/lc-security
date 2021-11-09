@@ -7,8 +7,6 @@ import com.lc.security.demo.pojo.vo.UserVO;
 import com.lc.security.demo.service.UserService;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +25,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Resource
     private PasswordEncoder passwordEncoder;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Override
     public void add(UserDTO dto) {

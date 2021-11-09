@@ -16,7 +16,7 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
-security:
-  basic:
-    enabled: false
+#security:
+#  basic:
+#    enabled: false
 
