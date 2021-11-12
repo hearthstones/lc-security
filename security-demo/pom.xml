@@ -18,6 +18,11 @@
             <version>${lc.security.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.lc.security</groupId>
+            <artifactId>security-app</artifactId>
+            <version>${lc.security.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
