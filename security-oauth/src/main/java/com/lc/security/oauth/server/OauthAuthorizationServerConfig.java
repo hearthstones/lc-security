@@ -3,7 +3,6 @@ package com.lc.security.oauth.server;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -33,8 +32,6 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
     private AuthenticationManager authenticationManager;
     @Resource
     private UserDetailsService userDetailsService;
-    @Resource
-    private PasswordEncoder passwordEncoder;
 
     /**
      * 安全配置
@@ -57,11 +54,11 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        String clientSecret = passwordEncoder.encode("123456");
+        String clientSecret = "123456";
         clients.inMemory()
                 // admin
                 .withClient("admin")
-                .secret("123456")
+                .secret(clientSecret)
                 .scopes("all", "app", "web")
                 .authorizedGrantTypes("refresh_token", "authorization_code", "password", "client_credentials", "implicit")
                 // app
