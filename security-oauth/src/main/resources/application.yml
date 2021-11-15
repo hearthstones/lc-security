@@ -1,0 +1,18 @@
+server:
+  port: 9001
+
+#spring:
+#  # datasource
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://49.234.56.182:3306/security-demo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+#    username: root
+#    password: 123456
+#  # session
+#  session:
+#    store-type: none
+
+#security:
+#  basic:
+#    enabled: false
+
