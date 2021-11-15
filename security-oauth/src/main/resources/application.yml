@@ -1,18 +1,14 @@
 server:
   port: 9001
 
-#spring:
-#  # datasource
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://49.234.56.182:3306/security-demo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
-#    username: root
-#    password: 123456
-#  # session
-#  session:
-#    store-type: none
-
 #security:
-#  basic:
-#    enabled: false
-
+#  oauth2:
+#    client:
+#      client-id: app
+#      client-secret: 123456
+#      access-token-uri: http://localhost:9001/oauth/token
+#      user-authorization-uri: http://localhost:9001/oauth/authorize
+#    authorization:
+#      check-token-access: http://localhost:9001/oauth/check_token
+#    resource:
+#      token-info-uri: http://localhost:9001/oauth/check_token
