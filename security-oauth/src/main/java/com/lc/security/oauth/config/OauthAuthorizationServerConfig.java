@@ -1,4 +1,4 @@
-package com.lc.security.oauth.server;
+package com.lc.security.oauth.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

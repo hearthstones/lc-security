@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -24,6 +25,9 @@ import javax.validation.Valid;
 @RequestMapping("/oauth/app")
 @Api(value = "APP端授权", tags = "认证 - APP端")
 public class AppController {
+
+    @Resource
+    private TokenUtil tokenUtil;
 
     @GetMapping("/hello")
     public String hello() {
@@ -49,7 +53,7 @@ public class AppController {
     })
     public OAuth2AccessToken sms(@RequestBody @Valid SmsDTO dto, HttpServletRequest request) {
         SmsAuthenticationToken smsAuthenticationToken = new SmsAuthenticationToken(dto);
-        return TokenUtil.buildAccessToken(request, smsAuthenticationToken, "custom");
+        return tokenUtil.buildAccessToken(request, smsAuthenticationToken, "custom");
     }
 
 }
