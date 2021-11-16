@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,9 +49,9 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
 
         List<UserDetails> users = new ArrayList<>();
 
-        UserDetails admin = User.withUsername("admin").password(password).authorities("ADMIN", "USER").build();
-        UserDetails user1 = User.withUsername("user1").password(password).authorities("ADMIN", "USER").build();
-        UserDetails user2 = User.withUsername("user2").password(password).authorities("USER").build();
+        UserDetails admin = new User("admin", password, AuthorityUtils.createAuthorityList("ADMIN"));
+        UserDetails user1 = new User("user1", password, AuthorityUtils.createAuthorityList("ADMIN"));
+        UserDetails user2 = new User("user2", password, AuthorityUtils.createAuthorityList("USER"));
 
         users.add(admin);
         users.add(user1);
@@ -73,10 +74,12 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .requestMatchers()
-                .anyRequest()
+                .authorizeRequests()
+                // 放开权限的url
+                .antMatchers("/hello").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .httpBasic()
                 .and()
                 .csrf().disable();
     }

@@ -22,7 +22,6 @@ public class OauthResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/oauth/user")
                 .and()
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated();
+                .anyRequest().authenticated();
     }
 }

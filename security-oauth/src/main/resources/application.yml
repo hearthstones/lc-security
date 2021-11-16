@@ -1,14 +1,2 @@
 server:
   port: 9001
-
-#security:
-#  oauth2:
-#    client:
-#      client-id: app
-#      client-secret: 123456
-#      access-token-uri: http://localhost:9001/oauth/token
-#      user-authorization-uri: http://localhost:9001/oauth/authorize
-#    authorization:
-#      check-token-access: http://localhost:9001/oauth/check_token
-#    resource:
-#      token-info-uri: http://localhost:9001/oauth/check_token
