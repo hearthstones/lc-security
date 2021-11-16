@@ -2,6 +2,8 @@ package com.lc.security.oauth.controller;
 
 import com.lc.security.oauth.pojo.dto.AccountDTO;
 import com.lc.security.oauth.pojo.dto.SmsDTO;
+import com.lc.security.oauth.strategy.sms.SmsAuthenticationToken;
+import com.lc.security.oauth.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -46,8 +48,8 @@ public class AppController {
             @ApiImplicitParam(name = "client_secret", example = "123456", required = true, paramType = "header"),
     })
     public OAuth2AccessToken sms(@RequestBody @Valid SmsDTO dto, HttpServletRequest request) {
-
-        return null;
+        SmsAuthenticationToken smsAuthenticationToken = new SmsAuthenticationToken(dto);
+        return TokenUtil.buildAccessToken(request, smsAuthenticationToken, "custom");
     }
 
 }

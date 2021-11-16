@@ -1,21 +1,20 @@
 package com.lc.security.oauth.config;
 
+import com.lc.security.oauth.strategy.sms.SmsAuthenticationSecurityConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * OauthSecurityConfig
@@ -23,9 +22,21 @@ import java.util.List;
  * @author luchao
  * @date 2021/11/12
  */
-@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    private UserDetailsService oauthUserDetailsService;
+    @Resource
+    private PasswordEncoder passwordEncoder;
+    @Resource
+    private SmsAuthenticationSecurityConfig smsAuthenticationSecurityConfig;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     @Override
@@ -33,54 +44,25 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean(name = "userDetailsService")
+    @Autowired
     @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        return createUserDetailsService();
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(oauthUserDetailsService).passwordEncoder(passwordEncoder);
     }
-
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return createUserDetailsService();
-    }
-
-    private UserDetailsService createUserDetailsService() {
-        String password = passwordEncoder().encode("123456");
-
-        List<UserDetails> users = new ArrayList<>();
-
-        UserDetails admin = new User("admin", password, AuthorityUtils.createAuthorityList("ADMIN"));
-        UserDetails user1 = new User("user1", password, AuthorityUtils.createAuthorityList("ADMIN"));
-        UserDetails user2 = new User("user2", password, AuthorityUtils.createAuthorityList("USER"));
-
-        users.add(admin);
-        users.add(user1);
-        users.add(user2);
-
-        return new InMemoryUserDetailsManager(users);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-//    @Autowired
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 // 放开权限的url
-                .antMatchers("/hello").permitAll()
+                .antMatchers("/hello", "/oauth/app/sms").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
                 .and()
                 .csrf().disable();
+
+        // 加载自定义登录
+        http.apply(smsAuthenticationSecurityConfig);
     }
 }
