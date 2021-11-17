@@ -4,19 +4,11 @@ server:
 spring:
   # datasource
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://49.234.56.182:3306/security-demo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://49.234.56.182:3306/security_oauth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     username: root
     password: 123456
-  # session
-  session:
-    store-type: none
 
 # mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-
-#security:
-#  basic:
-#    enabled: false
-
