@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +42,8 @@ public class AppController {
             @ApiImplicitParam(name = "client_secret", example = "123456", required = true, paramType = "header"),
     })
     public OAuth2AccessToken account(@RequestBody @Valid AccountDTO dto, HttpServletRequest request) {
-
-        return null;
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.getMobile(), dto.getPassword());
+        return tokenUtil.buildAccessToken(request, token, "password");
     }
 
     @PostMapping("/sms")
@@ -52,8 +53,8 @@ public class AppController {
             @ApiImplicitParam(name = "client_secret", example = "123456", required = true, paramType = "header"),
     })
     public OAuth2AccessToken sms(@RequestBody @Valid SmsDTO dto, HttpServletRequest request) {
-        SmsAuthenticationToken smsAuthenticationToken = new SmsAuthenticationToken(dto);
-        return tokenUtil.buildAccessToken(request, smsAuthenticationToken, "custom");
+        SmsAuthenticationToken token = new SmsAuthenticationToken(dto);
+        return tokenUtil.buildAccessToken(request, token, "custom");
     }
 
 }

@@ -3,7 +3,6 @@ package com.lc.security.oauth.config;
 import com.lc.security.oauth.strategy.sms.SmsAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -55,7 +54,7 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // 放开权限的url
-                .antMatchers("/sms/send", "/oauth/app/sms").permitAll()
+                .antMatchers("/sms/send", "/oauth/app/account", "/oauth/app/sms").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

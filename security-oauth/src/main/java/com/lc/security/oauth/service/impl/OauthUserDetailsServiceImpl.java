@@ -26,12 +26,7 @@ public class OauthUserDetailsServiceImpl implements OauthUserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.lc.security.user.domain.User user = userMapper.selectByUsername(username);
-        UserDetails userDetails = new User(user.getUsername(), user.getPassword(),
-                user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(), user.getAccountNonLocked(),
-                AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
-        log.info("userDetails: {}", userDetails);
-        return userDetails;
+        return loadUserBySms(username);
     }
 
     @Override
