@@ -1,17 +1,20 @@
 package com.lc.security.oauth.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 /**
  * 认证服务器
@@ -33,8 +36,22 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
     private AuthenticationManager authenticationManager;
     @Resource
     private UserDetailsService userDetailsService;
+    /** 数据库连接池对象，SpringBoot配置完成后自动注入 */
     @Resource
-    private PasswordEncoder passwordEncoder;
+    private DataSource dataSource;
+
+    /**
+     * 客户端信息来源
+     * <p>
+     *  数据存储在 oauth_client_details 表
+     * </p>
+     *
+     * @return ClientDetailsService
+     */
+    @Bean
+    public ClientDetailsService jdbcClientDetailsService(){
+        return new JdbcClientDetailsService(dataSource);
+    }
 
     /**
      * 安全配置
@@ -57,25 +74,7 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        String clientSecret = passwordEncoder.encode("123456");
-        clients.inMemory()
-                // admin
-                .withClient("admin")
-                .secret(clientSecret)
-                .scopes("all", "app", "web")
-                .authorizedGrantTypes("refresh_token", "authorization_code", "password", "client_credentials", "implicit")
-                // app
-                .and()
-                .withClient("app")
-                .secret(clientSecret)
-                .scopes("app")
-                .authorizedGrantTypes("password", "refresh_token")
-                // web
-                .and()
-                .withClient("web")
-                .secret(clientSecret)
-                .scopes("web")
-                .authorizedGrantTypes("password", "refresh_token");
+        clients.withClientDetails(jdbcClientDetailsService());
     }
 
     /**

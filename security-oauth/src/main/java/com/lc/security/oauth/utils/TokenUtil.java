@@ -5,7 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.*;
-import org.springframework.security.oauth2.provider.client.BaseClientDetails;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +25,8 @@ public class TokenUtil {
     private AuthenticationManager authenticationManager;
     @Resource
     private AuthorizationServerTokenServices authorizationServerTokenServices;
+    @Resource
+    private JdbcClientDetailsService jdbcClientDetailsService;
 
     /**
      * 构造 OAuth2AccessToken
@@ -40,8 +42,7 @@ public class TokenUtil {
         // ClientDetails
         String clientId = request.getHeader("client_id");
         String clientSecret = request.getHeader("client_secret");
-        // todo: 获取ClientDetails
-        ClientDetails clientDetails = new BaseClientDetails();
+        ClientDetails clientDetails = jdbcClientDetailsService.loadClientByClientId(clientId);
         // TokenRequest
         TokenRequest tokenRequest = new TokenRequest(null, clientId, clientDetails.getScope(), grantType);
         // ClientDetails + TokenRequest => OAuth2Request
