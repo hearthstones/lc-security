@@ -54,7 +54,7 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // 放开权限的url
-                .antMatchers("/sms/send", "/oauth/app/account", "/oauth/app/sms").permitAll()
+                .antMatchers("/sms/send", "/oauth/app/current", "/oauth/app/account", "/oauth/app/sms").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
