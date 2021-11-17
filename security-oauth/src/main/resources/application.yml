@@ -8,4 +8,15 @@ spring:
     url: jdbc:mysql://49.234.56.182:3306/security_oauth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     username: root
     password: 123456
-
+  # redis
+  redis:
+    host: 49.234.56.182
+    port: 6379
+    database: 0
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: -1ms # 连接池最大阻塞等待时间（负值表示没有限制）

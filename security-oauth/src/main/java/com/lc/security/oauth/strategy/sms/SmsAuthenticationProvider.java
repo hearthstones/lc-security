@@ -25,6 +25,8 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
 
     @Resource
     private OauthUserDetailsService oauthUserDetailsService;
+    @Resource
+    private SmsUtil smsUtil;
 
     /**
      * 认证
@@ -40,7 +42,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         String mobile = params.getMobile();
         String code = params.getCode();
         // 校验
-        SmsUtil.check(mobile, code);
+        smsUtil.check(mobile, code);
         // 获取 UserDetails
         UserDetails user = oauthUserDetailsService.loadUserBySms(mobile);
         if (ObjectUtils.isEmpty(user)) {
