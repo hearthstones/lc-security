@@ -1,4 +1,4 @@
-package com.lc.security.user.model;
+package com.lc.security.user.domain;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -13,8 +13,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class User {
     private Integer id;
-
-    private String userid;
 
     private String username;
 

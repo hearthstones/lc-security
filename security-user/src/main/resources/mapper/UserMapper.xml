@@ -2,9 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lc.security.user.mapper.UserMapper">
 
-  <resultMap id="BaseResultMap" type="com.lc.security.user.model.User">
+  <resultMap id="BaseResultMap" type="com.lc.security.user.domain.User">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userId" jdbcType="VARCHAR" property="userid" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="clear_text" jdbcType="VARCHAR" property="clearText" />
@@ -16,7 +15,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, userId, username, password, clear_text, mobile, enabled, account_non_locked, account_non_expired,
+    id, username, password, clear_text, mobile, enabled, account_non_locked, account_non_expired,
     credentials_non_expired
   </sql>
 
@@ -25,6 +24,12 @@
     <include refid="Base_Column_List" />
     from user
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where mobile = #{mobile,jdbcType=VARCHAR}
   </select>
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -38,24 +43,21 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.lc.security.user.model.User">
-    insert into user (id, userId, username, 
+  <insert id="insert" parameterType="com.lc.security.user.domain.User">
+    insert into user (id, username,
       password, clear_text, mobile,
       enabled, account_non_locked, account_non_expired, credentials_non_expired
       )
-    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{clearText,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+    values (#{id,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{clearText,jdbcType=VARCHAR},
       #{enabled,jdbcType=BIT},
       #{accountNonLocked,jdbcType=BIT}, #{accountNonExpired,jdbcType=BIT}, #{credentialsNonExpired,jdbcType=BIT}
       )
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.lc.security.user.model.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.lc.security.user.domain.User">
     update user
     <set>
-      <if test="userid != null">
-        userId = #{userid,jdbcType=VARCHAR},
-      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>

@@ -11,4 +11,5 @@ spring:
 
 # mybatis
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.lc.security.user.domain
+  mapper-locations: classpath*:/mapper/*.xml

@@ -1,7 +1,7 @@
 package com.lc.security.user.service.impl;
 
 import com.lc.security.user.mapper.UserMapper;
-import com.lc.security.user.model.User;
+import com.lc.security.user.domain.User;
 import com.lc.security.user.pojo.dto.UserDTO;
 import com.lc.security.user.pojo.vo.UserVO;
 import com.lc.security.user.service.UserService;

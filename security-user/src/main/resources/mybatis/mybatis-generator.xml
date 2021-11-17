@@ -22,7 +22,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- Model类 -->
-        <javaModelGenerator targetPackage="com.lc.security.user.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.lc.security.user.domain" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>

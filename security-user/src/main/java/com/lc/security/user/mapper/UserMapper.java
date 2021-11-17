@@ -1,6 +1,6 @@
 package com.lc.security.user.mapper;
 
-import com.lc.security.user.model.User;
+import com.lc.security.user.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -32,6 +32,14 @@ public interface UserMapper {
      * @return user
      */
     User selectByPrimaryKey(Integer id);
+
+    /**
+     * 根据手机号查询用户信息
+     *
+     * @param mobile 手机号
+     * @return 用户信息
+     */
+    User selectByMobile(String mobile);
 
     /**
      * 根据用户名查询用户信息

@@ -1,9 +1,15 @@
 package com.lc.security.oauth.service.impl;
 
 import com.lc.security.oauth.service.OauthUserDetailsService;
+import com.lc.security.user.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * OauthUserDetailsServiceImpl
@@ -11,17 +17,30 @@ import org.springframework.stereotype.Service;
  * @author luchao
  * @date 2021/11/16
  */
+@Slf4j
 @Service("oauthUserDetailsService")
 public class OauthUserDetailsServiceImpl implements OauthUserDetailsService {
 
+    @Resource
+    private UserMapper userMapper;
+
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        com.lc.security.user.domain.User user = userMapper.selectByUsername(username);
+        UserDetails userDetails = new User(user.getUsername(), user.getPassword(),
+                user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(), user.getAccountNonLocked(),
+                AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
+        log.info("userDetails: {}", userDetails);
+        return userDetails;
     }
 
     @Override
     public UserDetails loadUserBySms(String mobile) {
-
-        return null;
+        com.lc.security.user.domain.User user = userMapper.selectByMobile(mobile);
+        UserDetails userDetails = new User(user.getUsername(), user.getPassword(),
+                user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(), user.getAccountNonLocked(),
+                AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
+        log.info("userDetails: {}", userDetails);
+        return userDetails;
     }
 }
