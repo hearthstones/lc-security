@@ -67,7 +67,7 @@ public class AppController {
             @ApiImplicitParam(name = "client_secret", example = "123456", required = true, paramType = "header"),
     })
     public OAuth2AccessToken sms(@RequestBody @Valid SmsDTO dto, HttpServletRequest request) {
-        SmsAuthenticationToken token = new SmsAuthenticationToken(dto);
+        SmsAuthenticationToken token = new SmsAuthenticationToken(dto.getMobile(), dto.getCode());
         return tokenUtil.buildAccessToken(request, token, "custom");
     }
 

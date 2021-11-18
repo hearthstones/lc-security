@@ -1,6 +1,5 @@
 package com.lc.security.oauth.strategy.sms;
 
-import com.lc.security.oauth.pojo.dto.SmsDTO;
 import com.lc.security.oauth.service.OauthUserDetailsService;
 import com.lc.security.oauth.utils.SmsUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +37,8 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取 mobile、code
         SmsAuthenticationToken smsAuthenticationToken = (SmsAuthenticationToken) authentication;
-        SmsDTO params = (SmsDTO) smsAuthenticationToken.getPrincipal();
-        String mobile = params.getMobile();
-        String code = params.getCode();
+        String mobile = (String) smsAuthenticationToken.getPrincipal();
+        String code = (String) smsAuthenticationToken.getCredentials();
         // 校验
         smsUtil.check(mobile, code);
         // 获取 UserDetails
@@ -50,7 +48,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
             log.error("账号不存在！UserDetails: {}", user);
         }
         // 构造 SmsAuthenticationToken
-        SmsAuthenticationToken resToken = new SmsAuthenticationToken(user, user.getAuthorities());
+        SmsAuthenticationToken resToken = new SmsAuthenticationToken(user, null, user.getAuthorities());
         resToken.setDetails(smsAuthenticationToken.getDetails());
         return resToken;
     }

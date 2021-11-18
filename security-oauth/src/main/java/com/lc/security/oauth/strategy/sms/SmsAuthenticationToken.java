@@ -1,6 +1,5 @@
 package com.lc.security.oauth.strategy.sms;
 
-import com.lc.security.oauth.pojo.dto.SmsDTO;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -20,26 +19,26 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = 530L;
 
-    /**
-     * 身份
-     */
     private final Object principal;
+    private Object credentials;
 
-    public SmsAuthenticationToken(SmsDTO params) {
+    public SmsAuthenticationToken(Object principal, Object credentials) {
         super(null);
-        this.principal = params;
+        this.principal = principal;
+        this.credentials = credentials;
         this.setAuthenticated(false);
     }
 
-    public SmsAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
+    public SmsAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
+        this.credentials = credentials;
         super.setAuthenticated(true);
     }
 
     @Override
     public Object getCredentials() {
-        return null;
+        return this.credentials;
     }
 
     @Override
@@ -59,5 +58,6 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public void eraseCredentials() {
         super.eraseCredentials();
+        this.credentials = null;
     }
 }
