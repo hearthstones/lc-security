@@ -1,6 +1,7 @@
 package com.lc.security.oauth.config;
 
 import com.lc.security.oauth.strategy.sms.SmsAuthenticationSecurityConfig;
+import com.lc.security.oauth.strategy.web.WebUsernamePasswordAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,8 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     @Resource
     private SmsAuthenticationSecurityConfig smsAuthenticationSecurityConfig;
+    @Resource
+    private WebUsernamePasswordAuthenticationSecurityConfig webUsernamePasswordAuthenticationSecurityConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -54,7 +57,7 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // 放开权限的url
-                .antMatchers("/sms/send", "/oauth/app/current", "/oauth/app/account", "/oauth/app/sms").permitAll()
+                .antMatchers("/sms/send", "/oauth/app/current", "/oauth/app/account", "/oauth/app/sms", "/oauth/web/account").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -63,5 +66,6 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 加载自定义登录
         http.apply(smsAuthenticationSecurityConfig);
+        http.apply(webUsernamePasswordAuthenticationSecurityConfig);
     }
 }

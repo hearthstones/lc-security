@@ -19,4 +19,11 @@ public interface OauthUserDetailsService extends UserDetailsService {
      */
     UserDetails loadUserBySms(String mobile);
 
+    /**
+     * 根据 用户 获取 UserDetails
+     *
+     * @param principal 用户名/手机号
+     * @return UserDetails
+     */
+    UserDetails loadWebUserByPrincipal(String principal);
 }

@@ -50,6 +50,14 @@ public interface UserMapper {
     User selectByUsername(String username);
 
     /**
+     * 根据 用户 获取 UserDetails
+     *
+     * @param principal 用户名/手机号
+     * @return 用户信息
+     */
+    User selectByPrincipal(String principal);
+
+    /**
      * 更新
      *
      * @param record user

@@ -32,6 +32,22 @@ public class OauthUserDetailsServiceImpl implements OauthUserDetailsService {
     @Override
     public UserDetails loadUserBySms(String mobile) {
         com.lc.security.user.domain.User user = userMapper.selectByMobile(mobile);
+        return getUserDetails(user);
+    }
+
+    @Override
+    public UserDetails loadWebUserByPrincipal(String principal) {
+        com.lc.security.user.domain.User user = userMapper.selectByPrincipal(principal);
+        return getUserDetails(user);
+    }
+
+    /**
+     * 构造 UserDetails
+     *
+     * @param user 用户信息
+     * @return UserDetails
+     */
+    private UserDetails getUserDetails(com.lc.security.user.domain.User user) {
         UserDetails userDetails = new User(user.getUsername(), user.getPassword(),
                 user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(), user.getAccountNonLocked(),
                 AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
