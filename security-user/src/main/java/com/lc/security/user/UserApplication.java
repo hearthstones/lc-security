@@ -2,7 +2,6 @@ package com.lc.security.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * UserApplication
@@ -11,7 +10,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @date 2021/11/8
  */
 @SpringBootApplication
-@EnableSwagger2
 public class UserApplication {
 
     public static void main(String[] args) {
