@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -39,6 +39,8 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
     /** 数据库连接池对象，SpringBoot配置完成后自动注入 */
     @Resource
     private DataSource dataSource;
+    @Resource(name = "redisTokenStore")
+    private TokenStore tokenStore;
 
     /**
      * 客户端信息来源
@@ -86,8 +88,8 @@ public class OauthAuthorizationServerConfig extends AuthorizationServerConfigure
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService)
                 // 配置令牌存储
-                .tokenStore(new InMemoryTokenStore())
-                .userDetailsService(userDetailsService);
+                .tokenStore(tokenStore);
     }
 }
