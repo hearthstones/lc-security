@@ -35,6 +35,9 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private WebUsernamePasswordAuthenticationSecurityConfig webUsernamePasswordAuthenticationSecurityConfig;
 
+    /** 不需要认证的路径 */
+    private final String[] ignoreUrls = {"/sms/send", "/oauth/app/sms", "/oauth/app/account", "/oauth/web/account", "/oauth/app/current"};
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -57,7 +60,8 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // 放开权限的url
-                .antMatchers("/sms/send", "/oauth/app/current", "/oauth/app/account", "/oauth/app/sms", "/oauth/web/account", "/doc.html").permitAll()
+                .antMatchers(ignoreUrls)
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
