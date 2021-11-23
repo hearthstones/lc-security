@@ -14,8 +14,6 @@ import lombok.Data;
 public class UserVO {
     private Integer id;
 
-    private String userid;
-
     private String username;
 
     private String password;
